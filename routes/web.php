@@ -20,6 +20,6 @@ Route::get('/', function () {
 
 
 Route::get('/listado', [usuariosController::class,'index'])->name('indexx');
-Route::get('/editar/{id}', 'usuariosController@editar')->name('editar');
-Route::post('/guardar/{tabla}', 'usuariosController@guardar')->name('guardar');
-Route::get('/eliminar/{tabla}/{id}', 'usuariosController@eliminar')->name('eliminar');
+Route::get('/editar/{id}', [usuariosController::class,'editar'])->name('editar');
+Route::post('/guardar', [usuariosController::class,'guardar'])->name('guardar');
+Route::get('/eliminar/{id}', [usuariosController::class,'eliminar'])->name('eliminar');

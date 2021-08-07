@@ -4,6 +4,8 @@ namespace App\Http\Controllers;
 
 use Illuminate\Http\Request;
 use App\Models\user;
+use DB;
+use Redirect;
 
 class usuariosController extends Controller
 {
@@ -58,15 +60,26 @@ class usuariosController extends Controller
         //return response()->json($datosPersona);
     }
 
-    /**
-     * Display the specified resource.
-     *
-     * @param  \App\Persona  $persona
-     * @return \Illuminate\Http\Response
-     */
-    public function show(Persona $persona)
+    public function guardar(Request $request)
     {
-        //
+
+       
+        try {
+            $user = new user;
+            
+            $user->nombre = $request->NOMBRES;
+            $user->documento = $request->IDENTIFICACION;
+            $user->rol = $request->ROL;
+            $user->save();
+            $ruta = "http://127.0.0.1:8000/listado";
+
+            return json_encode(['status' => 200, 'msj' => "cliente creado",'ruta' => $ruta]);
+
+        } catch (\Exception $e) {
+            DB::rollBack();
+            $msj_error = $e->getMessage();
+            return Redirect::to("listado/")->withErrors([$msj_error]);
+        }
     }
 
     /**

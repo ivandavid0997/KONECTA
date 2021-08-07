@@ -286,6 +286,9 @@
                     <div class="card shadow mb-4">
                         <div class="card-header py-3">
                             <h6 class="m-0 font-weight-bold text-primary">Lista de usuarios</h6>
+
+                            <button id="add_usuario" type="button" class="btn btn-outline-success btm-sm" style="display: inline-block;
+                                                    vertical-align: top;">  + Add </button>
                         </div> 
 
                     
@@ -320,11 +323,8 @@
                                             <td>
                                         
                                                 <div>
-                                                    <button type="button" class="btn btn-outline-success btm-sm" style="display: inline-block;
-                                                    vertical-align: top;">  Add </button>
-                    
                                                     <button type="button" class="btn btn-outline-warning fas fa-user-edit btm-sm" style="display: inline-block;
-                                                    vertical-align: top;"> Edit </button>
+                                                    vertical-align: top; onclick=editar({{$user->iduser}})"> Edit </button>
                     
                                                     <button type="button" class="btn btn-outline-danger fas fa-user-minus btm-sm" style="display: inline-block;
                                                     vertical-align: top;"> Delete  </button>
@@ -404,4 +404,52 @@
 
 </body>
 
+@include('add')
+
 </html>
+
+<script type="text/javascript">
+    $(document).ready(function() {
+      
+        $('#add_usuario').on('click',function(event){ 
+            event.preventDefault();
+            $('#add').modal('show');
+        });
+
+        $('#agregar_usuario').on('click',function(event){ 
+            event.preventDefault();
+
+            var inf = new FormData(); 
+            var NOMBRES = $('#NOMBRES').val(); 
+            var IDENTIFICACION = $('#IDENTIFICACION').val();
+            var ROL = $('#ROL').val();
+
+
+            inf.append("NOMBRES",NOMBRES);
+            inf.append("IDENTIFICACION",IDENTIFICACION);
+            inf.append("ROL",ROL);
+            inf.append("_token", "{{csrf_token()}}");
+
+            var url = "{{route('guardar')}}";
+              $.ajax({
+                  type: "POST",
+                  data: inf,
+                  dataType: 'json',
+                  processData: false,
+                  contentType: false,  
+                  url: url,
+                  beforeSend: function () { 
+                    $("#overlay").fadeIn(300);
+                },
+                success: function(data){
+                    console.log(data.msj);
+                    $('#add').modal('hide');
+                    window.location.href=data.ruta;
+                }
+            }); 
+         });    
+
+
+
+    });
+</script>

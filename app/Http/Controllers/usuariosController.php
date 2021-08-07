@@ -6,7 +6,7 @@ namespace App\Http\Controllers;
 use Illuminate\Http\Request;
 use Illuminate\Foundation\Http\FormRequest;
 use App\Http\Requests\UsuarioRequest;
-use App\Models\user;
+use App\Models\User;
 use DB;
 use Log;
 use Redirect;
@@ -22,7 +22,7 @@ class usuariosController extends Controller
     public function index()
     {   
 
-        $datos['usuarios']= user::all();
+        $datos['usuarios']= User::all();
 
         return view('listar',$datos);
     }
@@ -35,10 +35,11 @@ class usuariosController extends Controller
     public function guardar(UsuarioRequest $request)
     {
         try {
-            $user = new user;
+            $user = new User;
             
-            $user->nombre = $request->NOMBRES;
-            $user->documento = $request->IDENTIFICACION;
+            $user->name = $request->NOMBRES;
+            $user->email = $request->EMAIL;
+            $user->password = $request->PASSWORD;
             $user->rol = $request->ROL;
             $user->save();
 
@@ -53,17 +54,18 @@ class usuariosController extends Controller
 
     public function editar($id)
     {
-        $usuario = user::findOrFail($id);
+        $usuario = User::findOrFail($id);
         return view('edit', compact('usuario'));
     }
 
     public function update(Request $request, $id)
     {
         Log::info($request->all());
-        $usuario = user::findOrFail($id);
+        $usuario = User::findOrFail($id);
 
-        $usuario->nombre = $request->NOMBRES ;
-        $usuario->documento = $request->IDENTIFICACION ;
+        $usuario->name = $request->NOMBRES;
+        $usuario->email = $request->EMAIL;
+        $usuario->password = $request->PASSWORD;
         $usuario->rol = $request->ROL;
         $usuario->save();
 

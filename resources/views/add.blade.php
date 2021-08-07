@@ -61,19 +61,25 @@
           <form method="post" action="{{route('guardar')}}" id="form_usuario" enctype="multipart/form-data">
             @csrf
             
-            <input type='hidden' name='id' id='id_usuario' class='form-control' ">
+            <input type='hidden' name='id' id='id_usuario' class='form-control' >
         
             <div class='row'>    
                     <div class='form-group col-md-6'>
                         <label for='nombres'><b>NOMBRES </b></label>
-                        <input type='text' class='form-control' id='NOMBRES' name='NOMBRES' "   required />
+                        <input type='text' class='form-control' id='NOMBRES' name='NOMBRES'   required />
                     </div>
 
                     <div class=' form-group col-md-6'>
-                        <!-- IDENTIFICACION O NIT -->
-                        <label for='IDENTIFICACION'><b>IDENTIFICACION</b></label>
-                        <input type='text' class='form-control' id='IDENTIFICACION' name='IDENTIFICACION'   required />
+                        <!-- Email O NIT -->
+                        <label for='EMAIL'><b>EMAIL</b></label>
+                        <input type='text' class='form-control' id='EMAIL' name='EMAIL'   required />
                     </div>
+
+                    <div class=' form-group col-md-6'>
+                      <!-- Email O NIT -->
+                      <label for='PASSWORD'><b>PASSWORD</b></label>
+                      <input type='text' class='form-control' id='PASSWORD' name='PASSWORD'   required />
+                  </div>
             </div>         
 
             <div class='row'>

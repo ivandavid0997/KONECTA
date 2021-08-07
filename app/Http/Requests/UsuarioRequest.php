@@ -26,8 +26,8 @@ class UsuarioRequest extends FormRequest
     public function rules()
     {
         return [
-            'NOMBRES' => 'required|max:2',
-            'IDENTIFICACION' =>  'required|max:15',
+            'NOMBRES' => 'required|max:200',
+            'EMAIL' =>  'required|email',
             'ROL' => 'required',
         ];
     }
@@ -36,7 +36,9 @@ class UsuarioRequest extends FormRequest
     return [
         'NOMBRES.required' => 'El campo nombre es obligatorio',
         'NOMBRES.max' => 'El tamaño del campo nombre se excedio',
-        'IDENTIFICACION.required' => 'El campo documento es obligatorio',
+        'EMAIL.required' => 'El campo documento es obligatorio',
+        'EMAIL.email' => 'El campo email, debe ser un email valido',
+        'PASSWORD.required' => 'El campo contraseña es requerido',
         'ROL.required' => 'el ROL es obligatorio',
         ];
     }

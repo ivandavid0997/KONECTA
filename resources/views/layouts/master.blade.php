@@ -9,16 +9,19 @@
     <meta name="description" content="">
     <meta name="author" content="">
 
-    <title>KONECTA</title>
+    <title>KONECTA - Tables</title>
 
-    <!-- Custom fonts for this template-->
+    <!-- Custom fonts for this template -->
     <link href="vendor/fontawesome-free/css/all.min.css" rel="stylesheet" type="text/css">
     <link
         href="https://fonts.googleapis.com/css?family=Nunito:200,200i,300,300i,400,400i,600,600i,700,700i,800,800i,900,900i"
         rel="stylesheet">
 
-    <!-- Custom styles for this template-->
+    <!-- Custom styles for this template -->
     <link href="css/sb-admin-2.min.css" rel="stylesheet">
+
+    <!-- Custom styles for this page -->
+    <link href="vendor/datatables/dataTables.bootstrap4.min.css" rel="stylesheet">
 
 </head>
 
@@ -35,15 +38,22 @@
                 <div class="sidebar-brand-icon rotate-n-15">
                     <i class="fas fa-laugh-wink"></i>
                 </div>
-                <div class="sidebar-brand-text mx-3">KONECTA</div>
+                <div class="sidebar-brand-text mx-3">KONECTA </div>
             </a>
 
-            <!-- Nav Item - Tables -->
-            <li class="nav-item">
-                <a class="nav-link" href="http://127.0.0.1:8000/listado">
-                    <i class="fas fa-fw fa-table"></i>
-                    <span>Lista de Usuarios</span></a>
-            </li>
+            <!-- Divider -->
+            <hr class="sidebar-divider my-0">
+
+            @if(Auth::user()->rol == '1')
+
+                <!-- Nav Item - Tables -->
+                <li class="nav-item">
+                    <a class="nav-link" href="http://127.0.0.1:8000/listado">
+                        <i class="fas fa-fw fa-table"></i>
+                        <span>Lista de Usuarios</span></a>
+                </li>
+            @endif    
+
 
             <li class="nav-item">
                 <a class="nav-link" href="http://127.0.0.1:8000/listadoClientes">
@@ -72,9 +82,11 @@
                 <nav class="navbar navbar-expand navbar-light bg-white topbar mb-4 static-top shadow">
 
                     <!-- Sidebar Toggle (Topbar) -->
-                    <button id="sidebarToggleTop" class="btn btn-link d-md-none rounded-circle mr-3">
-                        <i class="fa fa-bars"></i>
-                    </button>
+                    <form class="form-inline">
+                        <button id="sidebarToggleTop" class="btn btn-link d-md-none rounded-circle mr-3">
+                            <i class="fa fa-bars"></i>
+                        </button>
+                    </form>
 
                     <!-- Topbar Search -->
                     <form
@@ -240,10 +252,12 @@
                         <li class="nav-item dropdown no-arrow">
                             <a class="nav-link dropdown-toggle" href="#" id="userDropdown" role="button"
                                 data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
-                                <span class="mr-2 d-none d-lg-inline text-gray-600 small"> {{ \Auth::user()->name }}  <br> {{ \Auth::user()->role->nombre }}     </span>
+                                <span class="mr-2 d-none d-lg-inline text-gray-600 small"> {{ \Auth::user()->name }} <br> {{ \Auth::user()->role->nombre }}   </span>
                                 <img class="img-profile rounded-circle"
                                     src="img/undraw_profile.svg">
                             </a>
+
+                            
                             <!-- Dropdown - User Information -->
                             <div class="dropdown-menu dropdown-menu-right shadow animated--grow-in"
                                 aria-labelledby="userDropdown">
@@ -260,19 +274,42 @@
                                     Activity Log
                                 </a>
                                 <div class="dropdown-divider"></div>
-                                <a class="dropdown-item" href="#" data-toggle="modal" data-target="#logoutModal">
+                                <a class="dropdown-item" onclick="event.preventDefault();
+                                document.getElementById('logout-form').submit();">
+                                        {{ __('Logout') }} 
                                     <i class="fas fa-sign-out-alt fa-sm fa-fw mr-2 text-gray-400"></i>
-                                    Logout
                                 </a>
+
+                                <form id="logout-form" action="{{ route('logout') }}" method="POST" class="d-none">
+                                    @csrf
+                                </form>
                             </div>
                         </li>
+
 
                     </ul>
 
                 </nav>
                 <!-- End of Topbar -->
 
-                
+                <!-- Begin Page Content -->
+                <div class="container-fluid">
+                    @yield("principal")
+                </div>
+                <!-- /.container-fluid -->
+
+            </div>
+            <!-- End of Main Content -->
+
+            <!-- Footer -->
+            <footer class="sticky-footer bg-white">
+                <div class="container my-auto">
+                    <div class="copyright text-center my-auto">
+                        <span>Copyright &copy; Your Website 2020</span>
+                    </div>
+                </div>
+            </footer>
+            <!-- End of Footer -->
 
         </div>
         <!-- End of Content Wrapper -->
@@ -307,7 +344,9 @@
 
     <!-- Bootstrap core JavaScript-->
     <script src="vendor/jquery/jquery.min.js"></script>
+    <script type="text/javascript" src="https://ajax.googleapis.com/ajax/libs/jquery/3.3.1/jquery.min.js"></script>
     <script src="vendor/bootstrap/js/bootstrap.bundle.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery-validate/1.19.3/jquery.validate.min.js"></script>
 
     <!-- Core plugin JavaScript-->
     <script src="vendor/jquery-easing/jquery.easing.min.js"></script>
@@ -316,12 +355,138 @@
     <script src="js/sb-admin-2.min.js"></script>
 
     <!-- Page level plugins -->
-    <script src="vendor/chart.js/Chart.min.js"></script>
+    <script src="vendor/datatables/jquery.dataTables.min.js"></script>
+    <script src="vendor/datatables/dataTables.bootstrap4.min.js"></script>
 
     <!-- Page level custom scripts -->
-    <script src="js/demo/chart-area-demo.js"></script>
-    <script src="js/demo/chart-pie-demo.js"></script>
+    <script src="js/demo/datatables-demo.js"></script>
+    
 
 </body>
 
+
 </html>
+
+<script type="text/javascript">
+
+
+    $('#crearUsuario').validate({
+       
+        rules: {
+            NOMBRES : {
+                required:true,
+                maxlength:20,
+                minlength:1,
+            },
+
+            IDENTIFICACION : {
+                required:true,
+                maxlength:15,
+                minlength:1,
+            },
+            
+            ROL : {
+                required:true,
+            },  
+        },
+        messages: {
+            NOMBRES : {
+                required: "Ingrese el campo NOMBRES.",
+                maxlength: "Ingreso mas de 20 caracteres.",
+                minlength: "No ingreso un nombre."
+            },
+
+            IDENTIFICACION : {
+                required: "Ingrese el campo IDENTIFICACION.",
+                maxlength: "Ingreso mas de 15 caracteres.",
+                minlength: "No ingreso una IDENTIFICACION."
+            },
+
+            ROL : {
+                required: "Debe escoger un Rol valido"
+            },  
+        },
+  });
+  
+
+        $('#agregar_usuario').on('click',function(event){ 
+            event.preventDefault();
+
+            var inf = new FormData(); 
+            var NOMBRES = $('#NOMBRES').val(); 
+            var IDENTIFICACION = $('#IDENTIFICACION').val();
+            var ROL = $('#ROL').val();
+
+
+            inf.append("NOMBRES",NOMBRES);
+            inf.append("IDENTIFICACION",IDENTIFICACION);
+            inf.append("ROL",ROL);
+            inf.append("_token", "{{csrf_token()}}");
+
+            var url = "{{route('guardar')}}";
+              $.ajax({
+                  type: "POST",
+                  data: inf,
+                  dataType: 'json',
+                  processData: false,
+                  contentType: false,  
+                  url: url,
+                  beforeSend: function () { 
+                    $("#overlay").fadeIn(300);
+                },
+                success: function(data){
+
+                    console.log(data.errors)
+                    if($.isEmptyObject(data.errors)){
+                        $('#add').modal('hide');
+                         window.location.href=data.ruta;
+                    }else{
+                        printErrorMsg(data.errors);
+                    }
+                    
+                }
+            }); 
+         });  
+         
+         function printErrorMsg (msg) {
+            $.each( msg, function( key, value ) {
+            console.log(key);
+              $('.'+key+'_err').text(value);
+            });
+        }
+
+    function borrar(id){
+       var string = "{{route('eliminar','xx')}}";
+       url = string.replace('xx',id);
+     $.ajax({
+         type: 'GET',
+         dataType: 'json',
+         url: url,
+         headers: {
+           'X-CSRF-TOKEN': "{{csrf_token()}}"
+         },
+         success: function(response){
+             console.log(response.msj);
+            window.location.href=response.ruta;
+         }
+     });
+    }
+
+    function editar(id){
+        var string = "{{route('editar','xx')}}";
+        url = string.replace('xx',id);
+      $.ajax({
+          type: 'GET',
+          dataType: 'html',
+          url: url,
+          headers: {
+            'X-CSRF-TOKEN': "{{csrf_token()}}"
+          },
+          success: function(response){
+            $('#modalEditUsuario').html(response);
+            $('#edit').modal('show');
+          }
+      });
+     }
+
+</script>

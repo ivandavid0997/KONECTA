@@ -2,7 +2,10 @@
 
 namespace App\Http\Controllers;
 
+
 use Illuminate\Http\Request;
+use Illuminate\Foundation\Http\FormRequest;
+use App\Http\Requests\UsuarioRequest;
 use App\Models\user;
 use DB;
 use Log;
@@ -24,7 +27,7 @@ class usuariosController extends Controller
         return view('listar',$datos);
     }
 
-    public function guardar(Request $request)
+    public function guardar(UsuarioRequest $request)
     {
         Log:info($request->all());
         try {
@@ -35,7 +38,7 @@ class usuariosController extends Controller
             $user->documento = $request->IDENTIFICACION;
             $user->rol = $request->ROL;
             $user->save();
-            $ruta = "http://127.0.0.1:8000/listado";
+            $ruta = route('index');
 
             return json_encode(['status' => 200, 'msj' => "cliente creado",'ruta' => $ruta]);
 
@@ -72,7 +75,7 @@ class usuariosController extends Controller
     {
         user::destroy($id);
 
-        $ruta = "http://127.0.0.1:8000/listado";
+        $ruta = route('index');
 
         return json_encode(['status' => 200, 'msj' => "cliente eliminado con exito",'ruta' => $ruta]); 
     }

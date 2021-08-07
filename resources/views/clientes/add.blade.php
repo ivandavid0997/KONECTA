@@ -1,4 +1,4 @@
-<div id="add" class="modal fade" tabindex="-1">
+<div id="addCliente" class="modal fade" tabindex="-1">
     <div class="modal-dialog modal-xl">
         <div class="modal-content">
             <div class="modal-header">
@@ -6,23 +6,14 @@
             </div>
             <div class="modal-body">
                 <div class="card-header py-3">
-                    <h6 class="m-0 font-weight-bold text-primary"> CREAR USUARIO </h6>
+                    <h6 class="m-0 font-weight-bold text-primary"> CREAR CLIENTE </h6>
                 </div>
                 <!-------------- FORMULARIO ------------>
-                <div class="container" id="modalAddUsuario">
+                <div class="container" id="modalAddCliente">
 
-                    @if (count($errors) > 0)
-                        <strong>Whoops!</strong> There were some problems with your input.<br><br>
-                        <ul>
-                        @foreach ($errors->all() as $error)
-                        <li>{{ $error }}</li>
-                        @endforeach
-                        </ul>
-                        @endif
-
-                    <form id="crearUsuario">
+                    <form id="crearCliente">
                         
-                        <input type='hidden' name='id' id='id_usuario' class='form-control' value=''>
+                        <input type='hidden' name='id' id='id_cliente' class='form-control' value=''>
 
 
                         <!-- PRIMERA FILAAAAA -->
@@ -40,24 +31,22 @@
                                  <label for="IDENTIFICACION"><b>IDENTIFICACION</b></label>
                                  <input type="text" class="form-control" id="IDENTIFICACION" name="IDENTIFICACION"  value="" required />
                                </div>
-                       </div>         
 
-                       <!-- TERCERA FILAAAAA -->
-                       <div class="row ">
-                    
-                               <!-- PRIMERA COLUMNA --> 
                                <div class="form-group col-md-6">
-                                 <!-- SEXO -->
-                                 <label for="ROL"><b>ROL</b></label>
-                                   <select class="form-control" id="ROL" name="ROL" required>
-                                       <option value="" selected>Seleccione ...</option>
-                                       <option value="1" >administrador</option>
-                                       <option value="2">vendedor</option>
-                                    </select>
-                               </div>
-                       </div>        
+                                <!-- NOMBRES O RAZON SOCIAL -->
+                                <label for="DIRECCION"><b>DIRECCION </b></label>
+                                <input type="text" class="form-control" id="DIRECCION" name="DIRECCION"   required />
+                              </div>
 
-                           <button id="agregar_usuario"  class="btn btn-primary">Crear Usuario</button>
+                               <!-- SEGUNDA COLUMNA -->
+                               <div class=" form-group col-md-6">
+                                 <!-- IDENTIFICACION O NIT -->
+                                 <label for="EMAIL"><b>EMAIL</b></label>
+                                 <input type="text" class="form-control" id="EMAIL" name="EMAIL"  value="" required />
+                               </div>
+                       </div>             
+
+                           <button id="agregar_cliente"  class="btn btn-primary">Crear cliente</button>
                   </form>
                 </div>    
 

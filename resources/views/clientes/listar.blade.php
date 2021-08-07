@@ -46,7 +46,7 @@
 
            
 
-             <!-- Nav Item - Tables -->
+            <!-- Nav Item - Tables -->
             <li class="nav-item">
                 <a class="nav-link" href="http://127.0.0.1:8000/listado">
                     <i class="fas fa-fw fa-table"></i>
@@ -291,9 +291,9 @@
                     <!-- DataTales Example -->
                     <div class="card shadow mb-4">
                         <div class="card-header py-3">
-                            <h6 class="m-0 font-weight-bold text-primary">Lista de usuarios</h6>
+                            <h6 class="m-0 font-weight-bold text-primary">Lista de clientes</h6>
 
-                            <button id="add_usuario" type="button" class="btn btn-outline-success btm-sm" style="display: inline-block;
+                            <button id="add_cliente" type="button" class="btn btn-outline-success btm-sm" style="display: inline-block;
                                                     vertical-align: top;">  + Add </button>
                         </div> 
 
@@ -306,7 +306,8 @@
                                             <th>Id</th>
                                             <th>Nombre</th>
                                             <th>Documento</th>
-                                            <th>Rol</th>
+                                            <th>direccion</th>
+                                            <th>email</th>
                                             <th>Opciones</th>
                                         </tr>
                                     </thead>
@@ -315,24 +316,26 @@
                                             <th>Id</th>
                                             <th>Nombre</th>
                                             <th>Documento</th>
-                                            <th>Rol</th>
+                                            <th>direccion</th>
+                                            <th>email</th>
                                             <th>Opciones</th>
                                         </tr>
                                     </tfoot>
                                     <tbody>
-                                        @foreach($usuarios as $key => $user)
+                                        @foreach($clientes as $key => $cliente)
                                         <tr>
-                                            <td>{{$user->iduser}}</td>
-                                            <td> {{$user->nombre }}</td>
-                                            <td>{{$user->documento }}</td>
-                                            <td>{{$user->rol }}</td>
+                                            <td>{{$cliente->idcliente}}</td>
+                                            <td> {{$cliente->nombre }}</td>
+                                            <td>{{$cliente->documento }}</td>
+                                            <td>{{$cliente->direccion }}</td>
+                                            <td>{{$cliente->email }}</td>
                                             <td>
                                         
                                                 <div>
-                                                    <a href="{{route('editar',$user->iduser)}}" type="button" class="btn btn-outline-warning fas fa-user-edit btm-sm" style="display: inline-block;
+                                                    <a href="{{route('editar.clientes',$cliente->idcliente)}}" type="button" class="btn btn-outline-warning fas fa-user-edit btm-sm" style="display: inline-block;
                                                     vertical-align: top;"> Edit </a>
                     
-                                                    <button onclick=borrar({{$user->iduser}}) class="btn btn-outline-danger fas fa-user-minus btm-sm" style="display: inline-block;
+                                                    <button onclick=borrar({{$cliente->idcliente}}) class="btn btn-outline-danger fas fa-user-minus btm-sm" style="display: inline-block;
                                                     vertical-align: top; "> Delete  </button>
                                                 </div>
                                             </td>
@@ -411,33 +414,35 @@
     
 
 </body>
-<div>@include('add')</div>
+<div>@include('clientes.add')</div>
 
 
 </html>
 
 <script type="text/javascript">
       
-        $('#add_usuario').on('click',function(event){ 
+        $('#add_cliente').on('click',function(event){ 
             event.preventDefault();
-            $('#add').modal('show');
+            $('#addCliente').modal('show');
         });
 
-        $('#agregar_usuario').on('click',function(event){ 
+        $('#agregar_cliente').on('click',function(event){ 
             event.preventDefault();
 
             var inf = new FormData(); 
             var NOMBRES = $('#NOMBRES').val(); 
             var IDENTIFICACION = $('#IDENTIFICACION').val();
-            var ROL = $('#ROL').val();
+            var DIRECCION = $('#DIRECCION').val();
+            var EMAIL = $('#EMAIL').val();
 
 
             inf.append("NOMBRES",NOMBRES);
             inf.append("IDENTIFICACION",IDENTIFICACION);
-            inf.append("ROL",ROL);
+            inf.append("DIRECCION",DIRECCION);
+            inf.append("EMAIL",EMAIL);
             inf.append("_token", "{{csrf_token()}}");
 
-            var url = "{{route('guardar')}}";
+            var url = "{{route('guardar.clientes')}}";
               $.ajax({
                   type: "POST",
                   data: inf,
@@ -450,14 +455,14 @@
                 },
                 success: function(data){
                     console.log(data.msj);
-                    $('#add').modal('hide');
+                    $('#addCliente').modal('hide');
                     window.location.href=data.ruta;
                 }
             }); 
          });          
 
     function borrar(id){
-       var string = "{{route('eliminar','xx')}}";
+       var string = "{{route('eliminar.clientes','xx')}}";
        url = string.replace('xx',id);
      $.ajax({
          type: 'GET',
@@ -474,7 +479,7 @@
     }
 
     function editar(id){
-        var string = "{{route('editar','xx')}}";
+        var string = "{{route('editar.clientes','xx')}}";
         url = string.replace('xx',id);
       $.ajax({
           type: 'GET',
@@ -484,8 +489,8 @@
             'X-CSRF-TOKEN': "{{csrf_token()}}"
           },
           success: function(response){
-            $('#modalEditUsuario').html(response);
-            $('#edit').modal('show');
+            $('#modalEditCliente').html(response);
+            $('#editCliente').modal('show');
           }
       });
      }

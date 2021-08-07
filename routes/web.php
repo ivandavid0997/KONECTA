@@ -19,7 +19,8 @@ Route::get('/', function () {
 });
 
 
-Route::get('/listado', [usuariosController::class,'index'])->name('indexx');
+Route::get('/listado', [usuariosController::class,'index'])->name('index');
 Route::get('/editar/{id}', [usuariosController::class,'editar'])->name('editar');
 Route::post('/guardar', [usuariosController::class,'guardar'])->name('guardar');
 Route::get('/eliminar/{id}', [usuariosController::class,'eliminar'])->name('eliminar');
+Route::post('/actualizar/{id}', [usuariosController::class,'update'])->name('actualizar');

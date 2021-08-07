@@ -5,6 +5,7 @@ namespace App\Http\Controllers;
 use Illuminate\Http\Request;
 use App\Models\user;
 use DB;
+use Log;
 use Redirect;
 
 class usuariosController extends Controller
@@ -23,48 +24,11 @@ class usuariosController extends Controller
         return view('listar',$datos);
     }
 
-    /**
-     * Show the form for creating a new resource.
-     *
-     * @return \Illuminate\Http\Response
-     */
-    public function create()
-    {
-        return view('crud.create');
-    }
-
-    /**
-     * Store a newly created resource in storage.
-     *
-     * @param  \Illuminate\Http\Request  $request
-     * @return \Illuminate\Http\Response
-     */
-    public function store(Request $request)
-    {
-        $validacionCampos = [
-            'nombre' => 'required|string|max:100',
-            'apellido' => 'required|string|max:100',
-            'ciudad' => 'required|string|max:100',
-        ];
-        $Mensaje= ["required" => ' :attribute es requerido'];
-
-        $this->validate($request,$validacionCampos,$Mensaje);
-
-        //$datosPersona=request()->all();
-
-        $datosPersona=request()->except('_token');
-
-        Persona::insert($datosPersona);
-
-        return redirect('crud')->with('Mensaje','persona AGREGADA con exito'); 
-        //return response()->json($datosPersona);
-    }
-
     public function guardar(Request $request)
     {
-
-       
+        Log:info($request->all());
         try {
+            
             $user = new user;
             
             $user->nombre = $request->NOMBRES;
@@ -82,43 +46,28 @@ class usuariosController extends Controller
         }
     }
 
-    /**
-     * Show the form for editing the specified resource.
-     *
-     * @param  \App\Persona  $persona
-     * @return \Illuminate\Http\Response
-     */
-    public function edit($id)
+    public function editar($id)
     {
-        $persona = Persona::findOrFail($id);
-
-        return view('crud.edit', compact('persona'));
+        $usuario = user::findOrFail($id);
+        return view('edit', compact('usuario'));
     }
 
-    /**
-     * Update the specified resource in storage.
-     *
-     * @param  \Illuminate\Http\Request  $request
-     * @param  \App\Persona  $persona
-     * @return \Illuminate\Http\Response
-     */
     public function update(Request $request, $id)
     {
-        $datosPersona=request()->except(['_token', '_method']);
-        Persona::where('id','=',$id)->update($datosPersona);
+        Log::info($request->all());
+        $usuario = user::findOrFail($id);
 
-        //$persona = Persona::findOrFail($id);
+        $usuario->nombre = $request->NOMBRES ;
+        $usuario->documento = $request->IDENTIFICACION ;
+        $usuario->rol = $request->ROL;
+        $usuario->save();
+
+        return redirect()->route('index');
         //return view('crud.edit', compact('persona'));
-         return redirect('crud')->with('Mensaje','persona MODIFICADA con exito');
+        // return redirect('crud')->with('Mensaje','persona MODIFICADA con exito');
 
     }
 
-    /**
-     * Remove the specified resource from storage.
-     *
-     * @param  \App\Persona  $persona
-     * @return \Illuminate\Http\Response
-     */
     public function eliminar($id)
     {
         user::destroy($id);

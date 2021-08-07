@@ -13,6 +13,9 @@
 
                     <form id="crearUsuario">
                         
+                        <input type='hidden' name='id' id='id_usuario' class='form-control' value=''>
+
+
                         <!-- PRIMERA FILAAAAA -->
                        <div class="row">    
                                <!-- PRIMERA COLUMNA -->

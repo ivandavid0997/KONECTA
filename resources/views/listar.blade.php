@@ -323,8 +323,8 @@
                                             <td>
                                         
                                                 <div>
-                                                    <button type="button" class="btn btn-outline-warning fas fa-user-edit btm-sm" style="display: inline-block;
-                                                    vertical-align: top; onclick=editar({{$user->iduser}})"> Edit </button>
+                                                    <a href="{{route('editar',$user->iduser)}}" type="button" class="btn btn-outline-warning fas fa-user-edit btm-sm" style="display: inline-block;
+                                                    vertical-align: top;"> Edit </a>
                     
                                                     <button onclick=borrar({{$user->iduser}}) class="btn btn-outline-danger fas fa-user-minus btm-sm" style="display: inline-block;
                                                     vertical-align: top; "> Delete  </button>
@@ -405,13 +405,12 @@
     
 
 </body>
+<div>@include('add')</div>
 
-@include('add')
 
 </html>
 
 <script type="text/javascript">
-    $(document).ready(function() {
       
         $('#add_usuario').on('click',function(event){ 
             event.preventDefault();
@@ -449,8 +448,7 @@
                     window.location.href=data.ruta;
                 }
             }); 
-         });    
-    });/*FIN*/
+         });          
 
     function borrar(id){
        var string = "{{route('eliminar','xx')}}";
@@ -468,4 +466,22 @@
          }
      });
     }
+
+    function editar(id){
+        var string = "{{route('editar','xx')}}";
+        url = string.replace('xx',id);
+      $.ajax({
+          type: 'GET',
+          dataType: 'html',
+          url: url,
+          headers: {
+            'X-CSRF-TOKEN': "{{csrf_token()}}"
+          },
+          success: function(response){
+            $('#modalEditUsuario').html(response);
+            $('#edit').modal('show');
+          }
+      });
+     }
+
 </script>

@@ -119,11 +119,13 @@ class usuariosController extends Controller
      * @param  \App\Persona  $persona
      * @return \Illuminate\Http\Response
      */
-    public function destroy($id)
+    public function eliminar($id)
     {
-        Persona::destroy($id);
+        user::destroy($id);
 
-        return redirect('crud')->with('Mensaje','persona ELIMINADA con exito');    
+        $ruta = "http://127.0.0.1:8000/listado";
+
+        return json_encode(['status' => 200, 'msj' => "cliente eliminado con exito",'ruta' => $ruta]); 
     }
 
 

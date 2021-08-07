@@ -326,8 +326,8 @@
                                                     <button type="button" class="btn btn-outline-warning fas fa-user-edit btm-sm" style="display: inline-block;
                                                     vertical-align: top; onclick=editar({{$user->iduser}})"> Edit </button>
                     
-                                                    <button type="button" class="btn btn-outline-danger fas fa-user-minus btm-sm" style="display: inline-block;
-                                                    vertical-align: top;"> Delete  </button>
+                                                    <button onclick=borrar({{$user->iduser}}) class="btn btn-outline-danger fas fa-user-minus btm-sm" style="display: inline-block;
+                                                    vertical-align: top; "> Delete  </button>
                                                 </div>
                                             </td>
                                         </tr>
@@ -387,6 +387,7 @@
 
     <!-- Bootstrap core JavaScript-->
     <script src="vendor/jquery/jquery.min.js"></script>
+    <script type="text/javascript" src="https://ajax.googleapis.com/ajax/libs/jquery/3.3.1/jquery.min.js"></script>
     <script src="vendor/bootstrap/js/bootstrap.bundle.min.js"></script>
 
     <!-- Core plugin JavaScript-->
@@ -401,6 +402,7 @@
 
     <!-- Page level custom scripts -->
     <script src="js/demo/datatables-demo.js"></script>
+    
 
 </body>
 
@@ -448,8 +450,22 @@
                 }
             }); 
          });    
+    });/*FIN*/
 
-
-
-    });
+    function borrar(id){
+       var string = "{{route('eliminar','xx')}}";
+       url = string.replace('xx',id);
+     $.ajax({
+         type: 'GET',
+         dataType: 'json',
+         url: url,
+         headers: {
+           'X-CSRF-TOKEN': "{{csrf_token()}}"
+         },
+         success: function(response){
+             console.log(response.msj);
+            window.location.href=response.ruta;
+         }
+     });
+    }
 </script>

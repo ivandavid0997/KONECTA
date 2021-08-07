@@ -293,8 +293,8 @@
                         <div class="card-header py-3">
                             <h6 class="m-0 font-weight-bold text-primary">Lista de clientes</h6>
 
-                            <button id="add_cliente" type="button" class="btn btn-outline-success btm-sm" style="display: inline-block;
-                                                    vertical-align: top;">  + Add </button>
+                            <a id="add_cliente" href="{{route('formulario.clientes')}}" type="button" class="btn btn-outline-success btm-sm" style="display: inline-block;
+                                                    vertical-align: top;">  + Add </a>
                         </div> 
 
                     
@@ -421,45 +421,6 @@
 
 <script type="text/javascript">
       
-        $('#add_cliente').on('click',function(event){ 
-            event.preventDefault();
-            $('#addCliente').modal('show');
-        });
-
-        $('#agregar_cliente').on('click',function(event){ 
-            event.preventDefault();
-
-            var inf = new FormData(); 
-            var NOMBRES = $('#NOMBRES').val(); 
-            var IDENTIFICACION = $('#IDENTIFICACION').val();
-            var DIRECCION = $('#DIRECCION').val();
-            var EMAIL = $('#EMAIL').val();
-
-
-            inf.append("NOMBRES",NOMBRES);
-            inf.append("IDENTIFICACION",IDENTIFICACION);
-            inf.append("DIRECCION",DIRECCION);
-            inf.append("EMAIL",EMAIL);
-            inf.append("_token", "{{csrf_token()}}");
-
-            var url = "{{route('guardar.clientes')}}";
-              $.ajax({
-                  type: "POST",
-                  data: inf,
-                  dataType: 'json',
-                  processData: false,
-                  contentType: false,  
-                  url: url,
-                  beforeSend: function () { 
-                    $("#overlay").fadeIn(300);
-                },
-                success: function(data){
-                    console.log(data.msj);
-                    $('#addCliente').modal('hide');
-                    window.location.href=data.ruta;
-                }
-            }); 
-         });          
 
     function borrar(id){
        var string = "{{route('eliminar.clientes','xx')}}";

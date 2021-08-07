@@ -27,20 +27,22 @@ class usuariosController extends Controller
         return view('listar',$datos);
     }
 
+    public function formulario()
+    {   
+        return view('add');
+    }
+
     public function guardar(UsuarioRequest $request)
     {
-        Log:info($request->all());
         try {
-            
             $user = new user;
             
             $user->nombre = $request->NOMBRES;
             $user->documento = $request->IDENTIFICACION;
             $user->rol = $request->ROL;
             $user->save();
-            $ruta = route('index');
 
-            return json_encode(['status' => 200, 'msj' => "cliente creado",'ruta' => $ruta]);
+            return redirect()->route('index');
 
         } catch (\Exception $e) {
             DB::rollBack();

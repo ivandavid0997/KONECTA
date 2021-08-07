@@ -293,8 +293,8 @@
                         <div class="card-header py-3">
                             <h6 class="m-0 font-weight-bold text-primary">Lista de usuarios</h6>
 
-                            <button id="add_usuario" type="button" class="btn btn-outline-success btm-sm" style="display: inline-block;
-                                                    vertical-align: top;">  + Add </button>
+                            <a id="add_usuario" type="button" href="{{route('formulario')}}" class="btn btn-outline-success btm-sm" style="display: inline-block;
+                                                    vertical-align: top;">  + Add </a>
                         </div> 
 
                     
@@ -395,6 +395,7 @@
     <script src="vendor/jquery/jquery.min.js"></script>
     <script type="text/javascript" src="https://ajax.googleapis.com/ajax/libs/jquery/3.3.1/jquery.min.js"></script>
     <script src="vendor/bootstrap/js/bootstrap.bundle.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery-validate/1.19.3/jquery.validate.min.js"></script>
 
     <!-- Core plugin JavaScript-->
     <script src="vendor/jquery-easing/jquery.easing.min.js"></script>
@@ -417,11 +418,46 @@
 </html>
 
 <script type="text/javascript">
-      
-        $('#add_usuario').on('click',function(event){ 
-            event.preventDefault();
-            $('#add').modal('show');
-        });
+
+
+    $('#crearUsuario').validate({
+       
+        rules: {
+            NOMBRES : {
+                required:true,
+                maxlength:20,
+                minlength:1,
+            },
+
+            IDENTIFICACION : {
+                required:true,
+                maxlength:15,
+                minlength:1,
+            },
+            
+            ROL : {
+                required:true,
+            },  
+        },
+        messages: {
+            NOMBRES : {
+                required: "Ingrese el campo NOMBRES.",
+                maxlength: "Ingreso mas de 20 caracteres.",
+                minlength: "No ingreso un nombre."
+            },
+
+            IDENTIFICACION : {
+                required: "Ingrese el campo IDENTIFICACION.",
+                maxlength: "Ingreso mas de 15 caracteres.",
+                minlength: "No ingreso una IDENTIFICACION."
+            },
+
+            ROL : {
+                required: "Debe escoger un Rol valido"
+            },  
+        },
+  });
+  
 
         $('#agregar_usuario').on('click',function(event){ 
             event.preventDefault();
@@ -449,12 +485,25 @@
                     $("#overlay").fadeIn(300);
                 },
                 success: function(data){
-                    console.log(data.msj);
-                    $('#add').modal('hide');
-                    window.location.href=data.ruta;
+
+                    console.log(data.errors)
+                    if($.isEmptyObject(data.errors)){
+                        $('#add').modal('hide');
+                         window.location.href=data.ruta;
+                    }else{
+                        printErrorMsg(data.errors);
+                    }
+                    
                 }
             }); 
-         });          
+         });  
+         
+         function printErrorMsg (msg) {
+            $.each( msg, function( key, value ) {
+            console.log(key);
+              $('.'+key+'_err').text(value);
+            });
+        }
 
     function borrar(id){
        var string = "{{route('eliminar','xx')}}";

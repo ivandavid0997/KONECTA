@@ -5,9 +5,8 @@ namespace App\Http\Requests;
 use Illuminate\Foundation\Http\FormRequest;
 use Illuminate\Http\Exceptions\HttpResponseException;
 
-class UsuarioRequest extends FormRequest
+class ClienteRequest extends FormRequest
 {
-    
     /**
      * Determine if the user is authorized to make this request.
      *
@@ -18,17 +17,13 @@ class UsuarioRequest extends FormRequest
         return true;
     }
 
-    /**
-     * Get the validation rules that apply to the request.
-     *
-     * @return array
-     */
     public function rules()
     {
         return [
-            'NOMBRES' => 'required|max:2',
+            'NOMBRES' => 'required|max:50',
             'IDENTIFICACION' =>  'required|max:15',
-            'ROL' => 'required',
+            'DIRECCION' => 'required',
+            'EMAIL' => 'required|email'
         ];
     }
     public function messages()
@@ -37,7 +32,12 @@ class UsuarioRequest extends FormRequest
         'NOMBRES.required' => 'El campo nombre es obligatorio',
         'NOMBRES.max' => 'El tamaño del campo nombre se excedio',
         'IDENTIFICACION.required' => 'El campo documento es obligatorio',
-        'ROL.required' => 'el ROL es obligatorio',
+        'IDENTIFICACION.max' => 'El campo IDENTIFICACION no puede ser mayor a 15',
+        'DIRECCION.required' => 'la DIRECCION es obligatorio',
+        'EMAIL.required' => 'El EMAIL es obligatorio',
+        'EMAIL.email' => 'El EMAIL debe ser tipo email',
+
+
         ];
     }
 
@@ -48,4 +48,3 @@ class UsuarioRequest extends FormRequest
         }
     }
 }
-

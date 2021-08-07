@@ -4,6 +4,7 @@ namespace App\Http\Controllers;
 
 use Illuminate\Http\Request;
 use App\Models\cliente;
+use App\Http\Requests\ClienteRequest;
 use DB;
 use Log;
 use Redirect;
@@ -23,7 +24,13 @@ class clienteController extends Controller
         return view('clientes.listar',$datos);
     }
 
-    public function guardar(Request $request)
+    public function formulario()
+    {   
+        return view('clientes.add');
+    }
+
+
+    public function guardar(ClienteRequest $request)
     {
         Log:info($request->all());
         try {
@@ -37,7 +44,7 @@ class clienteController extends Controller
             $cliente->save();
             $ruta = route('index.clientes');
 
-            return json_encode(['status' => 200, 'msj' => "cliente creado",'ruta' => $ruta]);
+            return redirect()->route('index.clientes');
 
         } catch (\Exception $e) {
             DB::rollBack();
